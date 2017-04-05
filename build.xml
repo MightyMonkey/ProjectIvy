@@ -76,18 +76,22 @@
           target: go
                     Go ivy, go!
          ================================= -->
-    <target name="go" depends="install-ivy, generate-src" 
-            description="--> resolve dependencies, compile and run the project">
+    <target name="go" depends="install-ivy, generate-src, resolve" 
+            description="--> resolve dependencies, compile the project">
 		<echo message="using ivy to resolve commons-lang 2.1..."/>
         <!-- here comes the magic line: asks ivy to resolve a dependency on 
              commons-lang 2.1 and to build an ant path with it from its cache  -->
-        <ivy:cachepath organisation="commons-lang" module="commons-lang" revision="2.1" 
-                       pathid="lib.path.id" inline="true"/>
         
 		<echo message="compiling..."/>
         <mkdir dir="${build.dir}" />
         <javac srcdir="${src.dir}" destdir="${build.dir}" classpathref="lib.path.id" />
-        
+    </target>
+<!-- ================================= 
+          target: run
+                    run ivy, run!
+         ================================= -->
+    <target name="run" depends="go" 
+            description="-->run the project">
 		<echo>
 We are now ready to execute our simple program with its dependency on commons-lang.
 Let's go!
@@ -100,6 +104,13 @@ Let's go!
         </java>
     </target>
 
+<!-- ================================= 
+          target: resolve
+         ================================= -->
+    <target name="resolve" description="retrieve dependencies with ivy">
+		<ivy:resolve /><!--resoudre les dependances déclarées dans ivy.xml-->
+		<ivy:cachepath pathid="lib.path.id" /><!--définir la variable lib.path.id-->
+    </target>
 	<!-- ================================= 
           target: generate-src
             'Generates' the class source. It actually just echo a simple java 
