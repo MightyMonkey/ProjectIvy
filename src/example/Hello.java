@@ -15,17 +15,31 @@ public class Hello {
         System.out.println("capitalized by " + WordUtils.class.getName() 
                                 + " : " + WordUtils.capitalizeFully(message));
 	int monmax=0;
-	int i,nb;
-	 try (CSVReader reader=new CSVReader(new FileReader("data.csv"))){
+	int i,nb,j;
+	CSVReader reader;
+	try {
+		reader = new CSVReader(new FileReader("data.csv"),',');
+	
+
 	 	List<String[]> myEntries= reader.readAll();
 
 		for(i=0;i<myEntries.size();i++){
-			nb=Integer.parseInt(myEntries.get(i)[0]);
-			if(monmax<nb){
-				monmax=nb;
+			for(j=0;j<myEntries.get(i).length;j++){
+				nb=Integer.parseInt(myEntries.get(i)[j]);
+				System.out.println("Nombre lu: "+nb);
+				if(nb>monmax){
+					monmax=nb;
+				}
 			}
 		}
-		System.out.println("Nombre lu: "+monmax);
+		System.out.println("Nombre max lu: "+monmax);
+		
+	} catch (FileNotFoundException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
 	}
     }
 }
